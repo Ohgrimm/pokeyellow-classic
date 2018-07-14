@@ -1906,7 +1906,7 @@ PrintListMenuEntries::
 	inc c
 	dec b
 	jp nz, .loop
-	ld bc, -8
+	ld bc, SCREEN_WIDTH -8
 	add hl, bc
 	ld a, $ee ; down arrow
 	ld [hl], a
@@ -3619,7 +3619,7 @@ WaitForTextScrollButtonPress::
 	pop bc
 	pop de
 .skipAnimation
-	coord hl, 18, 16
+	coord hl, 18, 17
 	call HandleDownArrowBlinkTiming
 	pop hl
 	call JoypadLowSensitivity
@@ -4068,7 +4068,7 @@ HandleMenuInputPokemonSelection::
 	and a ; was a key pressed?
 	jr nz, .keyPressed
 	push hl
-	coord hl, 18, 11 ; coordinates of blinking down arrow in some menus
+	coord hl, 18, 12 ; coordinates of blinking down arrow in some menus
 	call HandleDownArrowBlinkTiming ; blink down arrow (if any)
 	pop hl
 	ld a, [wMenuJoypadPollCount]
@@ -4274,7 +4274,7 @@ HandleDownArrowBlinkTiming::
 	dec a
 	ld [H_DOWNARROWBLINKCNT2], a
 	ret nz
-	ld a, " "
+	ld a, "─"
 	ld [hl], a
 	ld a, $ff
 	ld [H_DOWNARROWBLINKCNT1], a
