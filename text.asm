@@ -22,7 +22,7 @@ _CardKeyFailText::
 	done
 
 _TrainerNameText::
-	TX_RAM wcd6d
+	TX_RAM wTrainerName
 	text ": @@"
 
 _NoNibbleText::

@@ -2690,7 +2690,6 @@ PrintEndBattleText::
 	ld [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	push hl
-	callba SaveTrainerName
 	ld hl, TrainerEndBattleText
 	call PrintText
 	pop hl
