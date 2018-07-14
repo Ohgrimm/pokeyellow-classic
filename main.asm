@@ -2136,3 +2136,10 @@ INCLUDE "engine/bank3e.asm"
 SECTION "bank3F", ROMX
 
 INCLUDE "engine/bank3f.asm"
+
+
+
+SECTION "Trainer Parties",ROMX
+
+INCLUDE "engine/battle/read_trainer_party.asm"
+INCLUDE "data/trainer_parties.asm"
