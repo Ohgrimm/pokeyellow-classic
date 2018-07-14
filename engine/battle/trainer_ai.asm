@@ -330,6 +330,10 @@ INCLUDE "text/trainer_names.asm"
 
 INCLUDE "engine/battle/bank_e_misc.asm"
 
+SECTION "Item Descriptions", ROMX
+
+INCLUDE "engine/menu/item_descriptions.asm"
+
 TrainerAI:
 	ld a,[wIsInBattle]
 	dec a
