@@ -5455,7 +5455,7 @@ AdjustDamageForMoveType:
 	ret
 
 StoreDamage:
-; store the resuly of those multiply/divide operations back in wDamage
+; store the result of those multiply/divide operations back in wDamage
 	ld hl, wDamage
 	ld a, [H_QUOTIENT + 2]
 	ld [hli], a
