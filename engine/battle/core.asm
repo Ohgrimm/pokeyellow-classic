@@ -459,10 +459,11 @@ MainInBattleLoop:
 	ld b, 0
 	add hl, bc
 	ld a, [hl]
+	cp MIRROR_MOVE
+	jr z, .specialMoveUsed
 	cp METRONOME
 	jr nz, .specialMoveNotUsed
-	cp MIRROR_MOVE
-	jr nz, .specialMoveNotUsed
+.specialMoveUsed
 	ld [wPlayerSelectedMove], a
 .specialMoveNotUsed
 	callab SwitchEnemyMon
@@ -4515,7 +4516,11 @@ GetDamageVarsForEnemyAttack:
 	rr c
 	srl b
 	rr c
-; defensive stat can actually end up as 0, leading to a division by 0 freeze during damage calculation
+	ld a, c
+	or b ; is the enemy's defensive stat 0?
+	jr nz, .player
+	inc c ; if the enemy's defensive stat is 0, bump it up to 1
+.player
 ; hl /= 4 (scale enemy's offensive stat)
 	srl h
 	rr l
