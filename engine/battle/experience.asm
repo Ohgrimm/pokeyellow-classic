@@ -2,7 +2,11 @@ GainExperience:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ret z ; return if link battle
+	ld a, [wBoostExpByExpAll]
+	and a
+	jr nz, .skip_divide
 	call DivideExpDataByNumMonsGainingExp
+.skip_divide
 	ld hl, wPartyMon1
 	xor a
 	ld [wWhichPokemon], a
