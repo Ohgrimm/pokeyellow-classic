@@ -7071,20 +7071,12 @@ SleepEffect:
 	and a
 	jr nz, .didntAffect
 .setSleepCounter
-; set target's sleep counter to a random number between 1 and 7
+; set target's sleep counter to a random number between 3 and 6
+; changed to make this in line with Gen II's sleep mechanics
 	call BattleRandom
-	and $7
-	jr z, .setSleepCounter
-	ld b, a
-	ld a, [wUnknownSerialFlag_d499]
-	and a
-	jr z, .asm_3f1ba ; XXX stadium stuff?
-	ld a, b
-	and $3
-	jr z, .setSleepCounter
-	ld b, a
-.asm_3f1ba
-	ld a, b
+	and $4
+	inc a ; always at least 3, since 1 is now functionally 0
+	inc a ; this means you will always have one turn where you can't attack
 	ld [de], a
 	call PlayCurrentMoveAnimation2
 	ld hl, FellAsleepText
