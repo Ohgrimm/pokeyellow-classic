@@ -415,7 +415,7 @@ MainInBattleLoop:
 	ld a, [wEnemyBattleStatus1]
 	bit UsingTrappingMove, a ; check if enemy is using a multi-turn attack like wrap
 	jr z, .selectPlayerMove ; if not, jump
-; enemy is using a mult-turn attack like wrap, so player is trapped and cannot execute a move
+; enemy is using a multi-turn attack like wrap, so player is trapped and cannot execute a move
 	ld a, $ff
 	ld [wPlayerSelectedMove], a
 	jr .selectEnemyMove
@@ -714,7 +714,7 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP:
 	ret
 
 ; adds bc to enemy HP
-; bc isn't updated if HP substracted was capped to prevent overkill
+; bc isn't updated if HP subtracted was capped to prevent overkill
 HandlePoisonBurnLeechSeed_IncreaseEnemyHP:
 	push hl
 	ld hl, wEnemyMonMaxHP
@@ -1250,7 +1250,7 @@ ChooseNextMon:
 	ret
 
 ; called when player is out of usable mons.
-; prints approriate lose message, sets carry flag if player blacked out (special case for initial rival fight)
+; prints appropriate lose message, sets carry flag if player blacked out (special case for initial rival fight)
 HandlePlayerBlackOut:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
@@ -3592,7 +3592,7 @@ CheckPlayerStatusConditions:
 
 .HeldInPlaceCheck
 	ld a,[wEnemyBattleStatus1]
-	bit UsingTrappingMove,a ; is enemy using a mult-turn move like wrap?
+	bit UsingTrappingMove,a ; is enemy using a multi-turn move like wrap?
 	jp z,.FlinchedCheck
 	ld hl,CantMoveText
 	call PrintText
@@ -3718,7 +3718,7 @@ CheckPlayerStatusConditions:
 	ld c,[hl]
 	ld hl,wPlayerBideAccumulatedDamage + 1
 	ld a,[hl]
-	add c ; acumulate damage taken
+	add c ; accumulate damage taken
 	ld [hld],a
 	ld a,[hl]
 	adc b
@@ -4355,7 +4355,7 @@ GetDamageVarsForPlayerAttack:
 	rl b
 	call CapBCAt1023
 ; reflect and light screen boosts do not cap the stat at 999, so weird things will happen during stats scaling if
-; a Pokemon with 512 or more Defense has ued Reflect, or if a Pokemon with 512 or more Special has used Light Screen
+; a Pokemon with 512 or more Defense has used Reflect, or if a Pokemon with 512 or more Special has used Light Screen
 .specialAttackCritCheck
 	ld hl, wBattleMonSpecial
 	ld a, [wCriticalHitOrOHKO]
@@ -5281,7 +5281,6 @@ MirrorMoveCopyMove:
 	ld hl,wEnemySelectedMove
 	ld bc,wPlayerSelectedMove ; Added so we can check what they actually selected
 .next
-	ld [hl],a ; Commented out so we aren't loading the wrong move
 	cp a,MIRROR_MOVE ; did the target Pokemon last use Mirror Move, and miss?
 	jr z,.mirrorMoveFailed
 	and a ; has the target selected any move yet?
@@ -7104,7 +7103,8 @@ SleepEffect:
 ; set target's sleep counter to a random number between 3 and 6
 ; changed to make this in line with Gen II's sleep mechanics
 	call BattleRandom
-	and $4
+	and $3
+	inc a ; Random number between 0 - 3, inc 3 times to make 3 - 6
 	inc a ; always at least 3, since 1 is now functionally 0
 	inc a ; this means you will always have one turn where you can't attack
 	ld [de], a
@@ -7132,16 +7132,16 @@ PoisonEffect:
 	ld de, wEnemyMoveEffect
 .poisonEffect
 	call CheckTargetSubstitute
-	jr nz, .noEffect ; can't posion a substitute target
+	jr nz, .noEffect ; can't poison a substitute target
 	ld a, [hli]
 	ld b, a
 	and a
 	jr nz, .noEffect ; miss if target is already statused
 	ld a, [hli]
-	cp POISON ; can't posion a poison-type target
+	cp POISON ; can't poison a poison-type target
 	jr z, .noEffect
 	ld a, [hld]
-	cp POISON ; can't posion a poison-type target
+	cp POISON ; can't poison a poison-type target
 	jr z, .noEffect
 	ld a, [de]
 	cp POISON_SIDE_EFFECT1
@@ -7647,7 +7647,7 @@ StatModifierDownEffect:
 	jp nz, MoveMissed
 	ld a, [de]
 	sub ATTACK_DOWN1_EFFECT
-	cp EVASION_DOWN1_EFFECT + $3 - ATTACK_DOWN1_EFFECT ; covers al -1 effects
+	cp EVASION_DOWN1_EFFECT + $3 - ATTACK_DOWN1_EFFECT ; covers all -1 effects
 	jr c, .decrementStatMod
 	sub ATTACK_DOWN2_EFFECT - ATTACK_DOWN1_EFFECT ; map -2 effects to corresponding -1 effect
 .decrementStatMod
