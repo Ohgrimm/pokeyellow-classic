@@ -8,6 +8,48 @@ It builds the following rom:
 
 To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
+## Development Optimizations
+* add dedicated bank for Trainer Data
+* Pokémon sprites can be in any bank
+* optimize Mart inventory data
+* remove unnecessary Japanese grammar checks
+* remove unnecessary `SaveTrainerName` routine
+* Trainer sprites can be in any bank
+
+## Included Bugfixes
+* breaking a substitute no longer negates effects of charge, sacrificial, and recoil moves
+* correct Bide damage glitch
+* correct Critical Hit ratio error
+* correct dual-type damage misinformation
+* correct Exp. All oversight
+* correct Hyper Beam + Sleep move glitch
+* correct invulnerability glitch
+* correct Reflect/Light Screen stat overflow glitch
+* correct Substitute ¼ HP glitch
+* damage is cleared when Pokémon enter the field so Counter/Bide cannot bounce back damage from non-active Pokémon or a previous battle
+* Defense cannot become 0 after stat scaling
+* prevent evolutionary stone bypassing
+* prevent HP recovery move failure
+* prevent level-up learnset skipping
+* prevent partial trapping move Mirror Move link battle glitch
+* prevent Psywave desynchronization
+* prevent Struggle bypassing
+* reset Toxic counter with Rest
+* revise `BallFactor` behaviour for Ultra Balls
+
+## New Features
+TBD
+
+## Restored Content
+* display Gym Leader names on Badges screen
+* display Rival dialogue after losing a battle to him
+
+## Quality of Life Improvements
+* increase Pikachu's happiness upon healing
+* move blinking ▼ outside of text area
+* turn to face opponent trainers who have noticed you
+* user will now awaken from Rest three turns after it is used and can attack on the third
+
 
 ## See also
 
