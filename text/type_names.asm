@@ -10,17 +10,17 @@ TypeNames:
 	dw .Bug
 	dw .Ghost
 
-	dw .Normal
-	dw .Normal
-	dw .Normal
-	dw .Normal
-	dw .Normal
-	dw .Normal
-	dw .Normal
-	dw .Normal
-	dw .Normal
-	dw .Normal
-	dw .Normal
+	dw .Unk
+	dw .Normal	; Unused
+	dw .Normal	; Unused
+	dw .Normal	; Unused
+	dw .Normal	; Unused
+	dw .Normal	; Unused
+	dw .Normal	; Unused
+	dw .Normal	; Unused
+	dw .Normal	; Unused
+	dw .Normal	; Unused
+	dw .Normal	; Unused
 
 	dw .Fire
 	dw .Water
@@ -46,3 +46,4 @@ TypeNames:
 .Bug:      db "BUG@"
 .Ghost:    db "GHOST@"
 .Dragon:   db "DRAGON@"
+.Unk:       db "???@"

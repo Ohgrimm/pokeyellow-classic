@@ -45,6 +45,7 @@ TBD
 * display Rival dialogue after losing a battle to him
 
 ## Quality of Life Improvements
+* changed Struggle to be ???-Type so nothing can be immune to it
 * increase Pikachu's happiness upon healing
 * move blinking ▼ outside of text area
 * turn to face opponent trainers who have noticed you
