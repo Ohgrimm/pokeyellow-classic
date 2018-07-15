@@ -17,6 +17,7 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 * Trainer sprites can be in any bank
 
 ## Included Bugfixes
+* 100% Accuracy moves no longer accidentally have a 1/256 chance of missing
 * breaking a substitute no longer negates effects of charge, sacrificial, and recoil moves
 * correct Bide damage glitch
 * correct Critical Hit ratio error
