@@ -5245,19 +5245,24 @@ MirrorMoveCopyMove:
 	and a
 ; values for player turn
 	ld a,[wEnemyUsedMove]
-	ld hl,wPlayerSelectedMove
 	ld de,wPlayerMoveNum
+	ld hl,wPlayerSelectedMove
+	ld bc,wEnemySelectedMove ; Added so we can check what they actually selected
 	jr z,.next
 ; values for enemy turn
 	ld a,[wPlayerUsedMove]
 	ld de,wEnemyMoveNum
 	ld hl,wEnemySelectedMove
+	ld bc,wPlayerSelectedMove ; Added so we can check what they actually selected
 .next
-	ld [hl],a
+	ld [hl],a ; Commented out so we aren't loading the wrong move
 	cp a,MIRROR_MOVE ; did the target Pokemon last use Mirror Move, and miss?
 	jr z,.mirrorMoveFailed
 	and a ; has the target selected any move yet?
-	jr nz,ReloadMoveData
+	jr z,.mirrorMoveFailed
+	ld a,[bc] ; Load A with whatever move they actually selected
+	ld [hl],a ; This command was originally up top and I just moved it down here because reasons
+	jr ReloadMoveData
 .mirrorMoveFailed
 	ld hl,MirrorMoveFailedText
 	call PrintText
