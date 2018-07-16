@@ -18,7 +18,7 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
 ## Included Bugfixes
 * 100% Accuracy moves no longer accidentally have a 1/256 chance of missing
-* breaking a substitute no longer negates effects of charge, sacrificial, and recoil moves
+* breaking a substitute no longer negates effects of sacrificial moves
 * correct Bide damage glitch
 * correct Critical Hit ratio error
 * correct dual-type damage misinformation
@@ -47,6 +47,7 @@ TBD
 
 ## Quality of Life Improvements
 * changed Struggle to be ???-Type so nothing can be immune to it
+* Focus Energy now uses a previously unused animation
 * increase Pikachu's happiness upon healing
 * move blinking ▼ outside of text area
 * turn to face opponent trainers who have noticed you

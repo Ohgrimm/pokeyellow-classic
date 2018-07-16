@@ -648,10 +648,11 @@ Evolution_FlagAction:
 	predef_jump FlagActionPredef
 
 GetMonLearnset:
-	dec a
-	ld b, 0
-	ld c, a
 	ld hl, EvosMovesPointerTable
+	ld b, 0
+	ld a, [wcf91]
+	dec a
+	ld c, a
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
