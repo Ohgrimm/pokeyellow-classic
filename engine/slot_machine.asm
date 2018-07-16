@@ -629,7 +629,7 @@ SlotMachine_PrintWinningSymbol:
 	ld [hli], a
 	inc a
 	ld [hl], a
-	coord hl, 18, 17
+	coord hl, 18, 16
 	ld [hl], $ee ; down arrow
 	ret
 
