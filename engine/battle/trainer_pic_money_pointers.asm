@@ -37,8 +37,8 @@ TrainerPicAndMoneyPointers:
 	dba EngineerPic
 	money 5000
 
-	dba JugglerPic
-	money 3500
+	dba SwimmerFPic
+	money 500
 
 	dba FisherPic
 	money 3500

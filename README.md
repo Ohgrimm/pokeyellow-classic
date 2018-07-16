@@ -41,6 +41,7 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 ## New Features
 * item descriptions in Bag
 * Trainer classes each have their own DVs
+* replace Beauties on water routes with female Swimmers
 * replace SGB border with a variation on that of the '97 Silver beta
 
 ## Restored Content
