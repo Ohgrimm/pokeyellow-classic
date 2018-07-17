@@ -2089,6 +2089,10 @@ SECTION "bank3F", ROMX
 INCLUDE "engine/bank3f.asm"
 
 
+SECTION "Engine Spillover", ROMX
+
+INCLUDE "engine/overworld/field_moves.asm"
+
 
 SECTION "Trainer Parties",ROMX
 
