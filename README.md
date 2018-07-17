@@ -38,6 +38,10 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 * reset Toxic counter with Rest
 * revise `BallFactor` behaviour for Ultra Balls
 
+## Graphical Changes
+* Black Belts now use a previously unused sprite
+* new overworld sprites for: Bill, Burglars, female Swimmers, Poliwrath, and receptionists
+
 ## New Features
 * item descriptions in Bag
 * Trainer classes each have their own DVs

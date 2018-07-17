@@ -57,3 +57,6 @@ replace.sh
 
 # extras is a submodule, don't include
 extras/
+
+# macOS
+.DS_Store
