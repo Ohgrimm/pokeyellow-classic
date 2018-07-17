@@ -25,6 +25,7 @@ StartMenu_Pokemon:
 	jr nc,.chosePokemon
 .exitMenu
 	call GBPalWhiteOutWithDelay3
+	call ReloadMapData
 	call RestoreScreenTilesAndReloadTilePatterns
 	call LoadGBPal
 	jp RedisplayStartMenu
@@ -291,6 +292,7 @@ StartMenu_Pokemon:
 	db "@"
 .goBackToMap
 	call RestoreScreenTilesAndReloadTilePatterns
+	call ReloadMapData
 	jp CloseTextDisplay
 .newBadgeRequired
 	ld hl,.newBadgeRequiredText
@@ -429,6 +431,7 @@ StartMenu_Item:
 	jp z,.partyMenuNotDisplayed
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
+	call ReloadMapData
 	pop af
 	ld [wUpdateSpritesEnabled],a
 	jp StartMenu_Item
