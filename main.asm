@@ -218,16 +218,6 @@ BrunoSprite:          INCBIN "gfx/sprites/bruno.2bpp"
 LoreleiSprite:        INCBIN "gfx/sprites/lorelei.2bpp"
 SeelSprite:           INCBIN "gfx/sprites/seel.2bpp"
 
-
-SECTION "NPC Sprites 3", ROMX
-
-BillSprite:            INCBIN "gfx/sprites/spaceworld/bill.2bpp"
-BurglarSprite:         INCBIN "gfx/sprites/spaceworld/burglar.2bpp"
-SwimmerFSprite:        INCBIN "gfx/sprites/spaceworld/swimmer_f.2bpp"
-PoliwrathSprite:       INCBIN "gfx/sprites/spaceworld/poliwrath.2bpp"
-ReceptionistSprite:    INCBIN "gfx/sprites/spaceworld/receptionist.2bpp"
-
-
 INCLUDE "engine/battle/moveEffects/substitute_effect.asm"
 INCLUDE "engine/menu/pc.asm"
 
