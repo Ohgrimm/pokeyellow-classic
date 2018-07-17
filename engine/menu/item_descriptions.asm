@@ -109,7 +109,7 @@ ItemDescriptionPointers:
 	db "@"
 	TX_FAR _NuggetDescription
 	db "@"
-	TX_FAR _HeartStoneDescription
+	TX_FAR _PPUpDescription
 	db "@"
 	TX_FAR _PokeDollDescription
 	db "@"

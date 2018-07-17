@@ -33,7 +33,6 @@ _FireStoneDescription::
 _ThunderStoneDescription::
 _WaterStoneDescription::
 _LeafStoneDescription::
-_HeartStoneDescription::
 	text "Evolves certain"
 	next "kinds of #MON."
 	prompt
@@ -514,8 +513,8 @@ _TM33Description::
 	prompt
 
 _TM34Description::
-	text "Waits 2-3 turns &"
-	next "hits back double."
+	text "Waits 2-3 turns to"
+	next "hit back double."
 	prompt
 
 _TM35Description::
