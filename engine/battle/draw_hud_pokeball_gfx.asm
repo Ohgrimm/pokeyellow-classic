@@ -34,6 +34,8 @@ SetupOwnPartyPokeballs:
 
 SetupEnemyPartyPokeballs:
 	call PlaceEnemyHUDTiles
+	coord hl, 1, 1
+	ld [hl], " "
 	ld hl, wEnemyMons
 	ld de, wEnemyPartyCount
 	call SetupPokeballs
