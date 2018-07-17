@@ -17,7 +17,7 @@ TrainerClassDVs:
 	dvs  9,  8,  8,  8 ; BIKER
 	dvs  9,  8,  8,  8 ; BURGLAR
 	dvs  9,  8,  8,  8 ; ENGINEER
-	dvs  7,  8,  8,  8 ; JUGGLER_X
+	dvs  7,  8,  8,  8 ; SWIMMER_F
 	dvs  9,  8,  8,  8 ; FISHER
 	dvs  9,  8,  8,  8 ; SWIMMER
 	dvs  9,  8,  8,  8 ; CUE_BALL
