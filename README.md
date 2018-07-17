@@ -43,6 +43,7 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 * new overworld sprites for: Bill, Burglars, female Swimmers, Poliwrath, and receptionists
 
 ## New Features
+* caught indicator in wild battles
 * item descriptions in Bag
 * more easily activate field moves
 * Trainer classes each have their own DVs
