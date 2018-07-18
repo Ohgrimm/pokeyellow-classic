@@ -1,5 +1,5 @@
 BorderPalettes:
-	INCBIN "gfx/tilemaps/sw_sgbborder.map"
+	INCBIN "gfx/tilemaps/spaceworld/sgbborder.map"
 
 	ds $100
 
@@ -25,4 +25,4 @@ BorderPalettes:
 	ds $18
 
 SGBBorderGraphics:
-	INCBIN "gfx/sw_sgbborder.2bpp"
+	INCBIN "gfx/spaceworld/sgbborder.2bpp"

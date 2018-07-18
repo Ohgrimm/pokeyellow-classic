@@ -39,8 +39,10 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 * revise `BallFactor` behaviour for Ultra Balls
 
 ## Graphical Changes
-* Black Belts now use a previously unused sprite
-* new overworld sprites for: Bill, Burglars, female Swimmers, Poliwrath, and receptionists
+* Black Belts now use a previously unused sprite, modified further based on the SpaceWorld demo
+* custom overworld sprites, adapted from the SpaceWorld demo
+* new overworld sprites, taken from the SpaceWorld demo, for: Bill, Burglars, female Swimmers, Poliwrath, and receptionists
+* replaced other overworld sprites with those of the SpaceWorld demo
 
 ## New Features
 * caught indicator in wild battles
