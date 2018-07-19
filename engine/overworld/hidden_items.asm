@@ -9,7 +9,7 @@ HiddenItems:
 	predef FlagActionPredef
 	ld a, c
 	and a
-	jr nz, .itemAlreadyFound
+	jr nz, .nope
 	call EnableAutoTextBoxDrawing
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
@@ -18,9 +18,8 @@ HiddenItems:
 	call GetItemName
 	tx_pre_jump FoundHiddenItemText
 
-.itemAlreadyFound
-	ld a, $ff
-	ld [hItemAlreadyFound], a
+.nope
+	predef TryFieldMove
 	ret
 
 INCLUDE "data/hidden_item_coords.asm"

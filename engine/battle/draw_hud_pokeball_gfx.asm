@@ -34,6 +34,8 @@ SetupOwnPartyPokeballs:
 
 SetupEnemyPartyPokeballs:
 	call PlaceEnemyHUDTiles
+	coord hl, 1, 1
+	ld [hl], " "
 	ld hl, wEnemyMons
 	ld de, wEnemyPartyCount
 	call SetupPokeballs
@@ -141,7 +143,7 @@ PlaceEnemyHUDTiles:
 	ld bc, $3
 	call CopyData
 	coord hl, 1, 2
-	ld de, $1
+	jp EnemyHealthBarUpdated
 	jr PlaceHUDTiles
 
 EnemyBattleHUDGraphicsTiles:

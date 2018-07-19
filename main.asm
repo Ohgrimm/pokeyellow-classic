@@ -141,18 +141,18 @@ RockerSprite:          INCBIN "gfx/sprites/rocker.2bpp"
 SwimmerSprite:         INCBIN "gfx/sprites/swimmer.2bpp"
 WhitePlayerSprite:     INCBIN "gfx/sprites/white_player.2bpp"
 GymHelperSprite:       INCBIN "gfx/sprites/gym_helper.2bpp"
-OldPersonSprite:       INCBIN "gfx/sprites/old_person.2bpp"
+OldPersonSprite:       INCBIN "gfx/sprites/custom/old_person.2bpp"
 MartGuySprite:         INCBIN "gfx/sprites/mart_guy.2bpp"
 FisherSprite:          INCBIN "gfx/sprites/fisher.2bpp"
-OldMediumWomanSprite:  INCBIN "gfx/sprites/old_medium_woman.2bpp"
+OldMediumWomanSprite:  INCBIN "gfx/sprites/custom/old_medium_woman.2bpp"
 NurseSprite:           INCBIN "gfx/sprites/nurse.2bpp"
-CableClubWomanSprite:  INCBIN "gfx/sprites/cable_club_woman.2bpp"
+CableClubWomanSprite:  INCBIN "gfx/sprites/spaceworld/cable_club_woman.2bpp"
 MrMasterballSprite:    INCBIN "gfx/sprites/mr_masterball.2bpp"
 LaprasGiverSprite:     INCBIN "gfx/sprites/lapras_giver.2bpp"
 WardenSprite:          INCBIN "gfx/sprites/warden.2bpp"
 SsCaptainSprite:       INCBIN "gfx/sprites/ss_captain.2bpp"
 Fisher2Sprite:         INCBIN "gfx/sprites/fisher2.2bpp"
-BlackbeltSprite:       INCBIN "gfx/sprites/blackbelt.2bpp"
+BlackbeltSprite:       INCBIN "gfx/sprites/custom/blackbelt.2bpp"
 GuardSprite:           INCBIN "gfx/sprites/guard.2bpp"
 BallSprite:            INCBIN "gfx/sprites/ball.2bpp"
 OmanyteSprite:         INCBIN "gfx/sprites/omanyte.2bpp"
@@ -196,17 +196,17 @@ FoulardWomanSprite:   INCBIN "gfx/sprites/foulard_woman.2bpp"
 GentlemanSprite:      INCBIN "gfx/sprites/gentleman.2bpp"
 DaisySprite:          INCBIN "gfx/sprites/daisy.2bpp"
 BikerSprite:          INCBIN "gfx/sprites/biker.2bpp"
-SailorSprite:         INCBIN "gfx/sprites/sailor.2bpp"
+SailorSprite:         INCBIN "gfx/sprites/custom/sailor.2bpp"
 CookSprite:           INCBIN "gfx/sprites/cook.2bpp"
 BikeShopGuySprite:    INCBIN "gfx/sprites/bike_shop_guy.2bpp"
 MrFujiSprite:         INCBIN "gfx/sprites/mr_fuji.2bpp"
 GiovanniSprite:       INCBIN "gfx/sprites/giovanni.2bpp"
-RocketSprite:         INCBIN "gfx/sprites/rocket.2bpp"
-MediumSprite:         INCBIN "gfx/sprites/medium.2bpp"
+RocketSprite:         INCBIN "gfx/sprites/spaceworld/rocket.2bpp"
+MediumSprite:         INCBIN "gfx/sprites/spaceworld/medium.2bpp"
 WaiterSprite:         INCBIN "gfx/sprites/waiter.2bpp"
 ErikaSprite:          INCBIN "gfx/sprites/erika.2bpp"
-MomGeishaSprite:      INCBIN "gfx/sprites/mom_geisha.2bpp"
-BrunetteGirlSprite:   INCBIN "gfx/sprites/brunette_girl.2bpp"
+MomGeishaSprite:      INCBIN "gfx/sprites/custom/mom_geisha.2bpp"
+BrunetteGirlSprite:   INCBIN "gfx/sprites/custom/brunette_girl.2bpp"
 LanceSprite:          INCBIN "gfx/sprites/lance.2bpp"
 MomSprite:            INCBIN "gfx/sprites/mom.2bpp"
 BaldingGuySprite:     INCBIN "gfx/sprites/balding_guy.2bpp"
@@ -216,7 +216,7 @@ ClefairySprite:       INCBIN "gfx/sprites/clefairy.2bpp"
 AgathaSprite:         INCBIN "gfx/sprites/agatha.2bpp"
 BrunoSprite:          INCBIN "gfx/sprites/bruno.2bpp"
 LoreleiSprite:        INCBIN "gfx/sprites/lorelei.2bpp"
-SeelSprite:           INCBIN "gfx/sprites/seel.2bpp"
+SeelSprite:           INCBIN "gfx/sprites/spaceworld/seel.2bpp"
 
 INCLUDE "engine/battle/moveEffects/substitute_effect.asm"
 INCLUDE "engine/menu/pc.asm"
@@ -835,6 +835,34 @@ TradingAnimationGraphics2End:
 
 INCLUDE "engine/evos_moves.asm"
 
+EnemyHealthBarUpdated:
+	ld [hl], $72
+	ld a, [wIsInBattle]
+	dec a
+	jr  nz, .noBattle
+	push hl
+	ld a, [wEnemyMonSpecies2]
+	ld [wd11e], a
+	ld hl, IndexToPokedex
+	ld b, BANK(IndexToPokedex)
+	call Bankswitch
+	ld a, [wd11e]
+	dec a
+	ld c, a
+	ld b, $2
+	ld hl, wPokedexOwned
+	predef FlagActionPredef
+	ld a, c
+	and a
+	jr z, .notOwned
+	coord hl, 1, 1
+	ld [hl], $E9
+.notOwned
+	pop hl
+.noBattle
+	ld de, $0001
+	jp PlaceHUDTiles
+
 
 SECTION "bank0F", ROMX
 
@@ -1174,55 +1202,6 @@ SafariZoneSecretHouseBlocks: INCBIN "maps/safarizonesecrethouse.blk"
 
 
 SECTION "bank13", ROMX
-
-TrainerPics:
-YoungsterPic:     INCBIN "pic/trainer/youngster.pic"
-BugCatcherPic:    INCBIN "pic/trainer/bugcatcher.pic"
-LassPic:          INCBIN "pic/trainer/lass.pic"
-SailorPic:        INCBIN "pic/trainer/sailor.pic"
-JrTrainerMPic:    INCBIN "pic/trainer/jr.trainerm.pic"
-JrTrainerFPic:    INCBIN "pic/trainer/jr.trainerf.pic"
-PokemaniacPic:    INCBIN "pic/trainer/pokemaniac.pic"
-SuperNerdPic:     INCBIN "pic/trainer/supernerd.pic"
-HikerPic:         INCBIN "pic/trainer/hiker.pic"
-BikerPic:         INCBIN "pic/trainer/biker.pic"
-BurglarPic:       INCBIN "pic/trainer/burglar.pic"
-EngineerPic:      INCBIN "pic/trainer/engineer.pic"
-FisherPic:        INCBIN "pic/trainer/fisher.pic"
-SwimmerPic:       INCBIN "pic/trainer/swimmer.pic"
-CueBallPic:       INCBIN "pic/trainer/cueball.pic"
-GamblerPic:       INCBIN "pic/trainer/gambler.pic"
-BeautyPic:        INCBIN "pic/trainer/beauty.pic"
-PsychicPic:       INCBIN "pic/trainer/psychic.pic"
-RockerPic:        INCBIN "pic/trainer/rocker.pic"
-JugglerPic:       INCBIN "pic/trainer/juggler.pic"
-TamerPic:         INCBIN "pic/trainer/tamer.pic"
-BirdKeeperPic:    INCBIN "pic/trainer/birdkeeper.pic"
-BlackbeltPic:     INCBIN "pic/trainer/blackbelt.pic"
-Rival1Pic:        INCBIN "pic/ytrainer/rival1.pic"
-ProfOakPic:       INCBIN "pic/trainer/prof.oak.pic"
-ChiefPic:
-ScientistPic:     INCBIN "pic/trainer/scientist.pic"
-GiovanniPic:      INCBIN "pic/trainer/giovanni.pic"
-RocketPic:        INCBIN "pic/trainer/rocket.pic"
-CooltrainerMPic:  INCBIN "pic/trainer/cooltrainerm.pic"
-CooltrainerFPic:  INCBIN "pic/trainer/cooltrainerf.pic"
-BrunoPic:         INCBIN "pic/trainer/bruno.pic"
-BrockPic:         INCBIN "pic/ytrainer/brock.pic"
-MistyPic:         INCBIN "pic/ytrainer/misty.pic"
-LtSurgePic:       INCBIN "pic/trainer/lt.surge.pic"
-ErikaPic:         INCBIN "pic/ytrainer/erika.pic"
-KogaPic:          INCBIN "pic/trainer/koga.pic"
-BlainePic:        INCBIN "pic/trainer/blaine.pic"
-SabrinaPic:       INCBIN "pic/trainer/sabrina.pic"
-GentlemanPic:     INCBIN "pic/trainer/gentleman.pic"
-Rival2Pic:        INCBIN "pic/ytrainer/rival2.pic"
-Rival3Pic:        INCBIN "pic/ytrainer/rival3.pic"
-LoreleiPic:       INCBIN "pic/trainer/lorelei.pic"
-ChannelerPic:     INCBIN "pic/trainer/channeler.pic"
-AgathaPic:        INCBIN "pic/trainer/agatha.pic"
-LancePic:         INCBIN "pic/trainer/lance.pic"
-JessieJamesPic:   INCBIN "pic/ytrainer/jessiejames.pic"
 
 INCLUDE "data/mapHeaders/tradecenter.asm"
 INCLUDE "scripts/tradecenter.asm"
@@ -2137,6 +2116,10 @@ SECTION "bank3F", ROMX
 
 INCLUDE "engine/bank3f.asm"
 
+
+SECTION "Engine Spillover", ROMX
+
+INCLUDE "engine/overworld/field_moves.asm"
 
 
 SECTION "Trainer Parties",ROMX

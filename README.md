@@ -38,8 +38,19 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 * reset Toxic counter with Rest
 * revise `BallFactor` behaviour for Ultra Balls
 
+## Graphical Changes
+* Black Belts now use a previously unused sprite, modified further based on the SpaceWorld demo
+* custom overworld sprites, adapted from the SpaceWorld demo
+* new overworld sprites, taken from the SpaceWorld demo, for: Bill, Burglars, female Swimmers, Poliwrath, and receptionists
+* replaced other overworld sprites with those of the SpaceWorld demo
+
 ## New Features
-TBD
+* caught indicator in wild battles
+* item descriptions in Bag
+* more easily activate field moves
+* Trainer classes each have their own DVs
+* replace Beauties on water routes with female Swimmers
+* replace SGB border with a variation on that of the '97 Silver beta
 
 ## Restored Content
 * display Gym Leader names on Badges screen
@@ -49,7 +60,6 @@ TBD
 * changed Struggle to be ???-Type so nothing can be immune to it
 * Focus Energy now uses a previously unused animation
 * increase Pikachu's happiness upon healing
-* move blinking ▼ outside of text area
 * turn to face opponent trainers who have noticed you
 * user will now awaken from Rest three turns after it is used and can attack on the third
 

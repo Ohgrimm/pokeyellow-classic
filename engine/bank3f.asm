@@ -21,3 +21,10 @@ ChanseySprite:         INCBIN "gfx/sprites/chansey.2bpp"
 SurfingPikachuSprite:  INCBIN "gfx/sprites/surfing_pikachu.2bpp"
 JessieSprite:          INCBIN "gfx/sprites/jessie.2bpp"
 JamesSprite:           INCBIN "gfx/sprites/james.2bpp"
+
+; new overworld sprites
+BillSprite:            INCBIN "gfx/sprites/spaceworld/bill.2bpp"
+BurglarSprite:         INCBIN "gfx/sprites/spaceworld/burglar.2bpp"
+SwimmerFSprite:        INCBIN "gfx/sprites/spaceworld/swimmer_f.2bpp"
+PoliwrathSprite:       INCBIN "gfx/sprites/spaceworld/poliwrath.2bpp"
+ReceptionistSprite:    INCBIN "gfx/sprites/spaceworld/receptionist.2bpp"

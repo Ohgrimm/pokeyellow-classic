@@ -9,7 +9,7 @@ PokemonTower1Object:
 	db $0 ; signs
 
 	db $5 ; objects
-	object SPRITE_CABLE_CLUB_WOMAN, $f, $d, STAY, UP, $1 ; person
+	object SPRITE_RECEPTIONIST, $f, $d, STAY, UP, $1 ; person
 	object SPRITE_MOM_GEISHA, $6, $8, STAY, NONE, $2 ; person
 	object SPRITE_BALDING_GUY, $8, $c, STAY, NONE, $3 ; person
 	object SPRITE_GIRL, $d, $7, STAY, NONE, $4 ; person

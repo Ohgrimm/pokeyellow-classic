@@ -1,87 +1,28 @@
 BorderPalettes:
-	INCBIN "gfx/tilemaps/sgbborder.map"
+	INCBIN "gfx/tilemaps/spaceworld/sgbborder.map"
 
 	ds $100
 
-	RGB 24,  6,  6
-	RGB 31, 25,  9
-	RGB 25, 10, 10
-	RGB  0,  0,  0
+	RGB 28,28,28 ; PAL_SGB1
+	RGB 31,27,14
+	RGB 19,25,25
+	RGB 16,16,19
 
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
+	ds $18
 
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
+	RGB 28,28,28 ; PAL_SGB2
+	RGB 31,20,15
+	RGB 31,26,20
+	RGB 16,16,19
 
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
+	ds $18
 
-	RGB 18, 24, 18
-	RGB 25, 10, 10
-	RGB 15, 25, 15
-	RGB  0,  0,  0
+	RGB 28,28,28 ; PAL_SGB3
+	RGB 29,23,24
+	RGB 19,25,18
+	RGB 16,16,19
 
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-
-	RGB 18,  6, 31
-	RGB 31, 25,  9
-	RGB 15, 25, 15
-	RGB  0,  0,  0
-
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-
-	RGB 12, 31,  6
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
-	RGB 31, 31, 25
+	ds $18
 
 SGBBorderGraphics:
-	INCBIN "gfx/pokemon_yellow.t6.2bpp"
+	INCBIN "gfx/spaceworld/sgbborder.2bpp"

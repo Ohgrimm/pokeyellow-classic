@@ -212,6 +212,12 @@ ROMX $3E
 ROMX $3F
   "bank3F"
 
+ROMX $40
+  "Engine Spillover"
+
+ROMX $41
+  "Trainer Parties"
+
 WRAM0
   "WRAM Bank 0"
 
@@ -234,4 +240,3 @@ SRAM 2
 
 SRAM 3
   "Saved Boxes 2"
-

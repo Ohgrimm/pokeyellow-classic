@@ -11,7 +11,7 @@ TrainerDataPointers:
 	dw BikerData
 	dw BurglarData
 	dw EngineerData
-	dw Juggler1Data
+	dw SwimmerFData
 	dw FisherData
 	dw SwimmerData
 	dw CueBallData
@@ -1692,6 +1692,7 @@ GamblerData:
 	db 24,VULPIX
 	db -1 ; end
 
+SwimmerFData:
 BeautyData:
 ; Celadon Gym
 	; OPP_BEAUTY, 1
@@ -1841,8 +1842,6 @@ RockerData:
 	db 29,ELECTRODE
 	db -1 ; end
 
-Juggler1Data: ; There is an unused duplicate Juggler class
-; none
 JugglerData:
 ; Silph Co. 5F
 	; OPP_JUGGLER, 1

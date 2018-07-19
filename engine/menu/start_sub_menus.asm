@@ -25,6 +25,7 @@ StartMenu_Pokemon:
 	jr nc,.chosePokemon
 .exitMenu
 	call GBPalWhiteOutWithDelay3
+	call ReloadMapData
 	call RestoreScreenTilesAndReloadTilePatterns
 	call LoadGBPal
 	jp RedisplayStartMenu
@@ -291,6 +292,7 @@ StartMenu_Pokemon:
 	db "@"
 .goBackToMap
 	call RestoreScreenTilesAndReloadTilePatterns
+	call ReloadMapData
 	jp CloseTextDisplay
 .newBadgeRequired
 	ld hl,.newBadgeRequiredText
@@ -353,10 +355,6 @@ StartMenu_Item:
 	call PlaceUnfilledArrowMenuCursor
 	xor a
 	ld [wMenuItemToSwap],a
-	ld a,[wcf91]
-	cp a,BICYCLE
-	jp z,.useOrTossItem
-.notBicycle1
 	ld a,USE_TOSS_MENU_TEMPLATE
 	ld [wTextBoxID],a
 	call DisplayTextBoxID
@@ -368,8 +366,8 @@ StartMenu_Item:
 	xor a
 	ld [hli],a ; current menu item ID
 	inc hl
-	inc a ; a = 1
-	ld [hli],a ; max menu item ID
+	ld a, 2
+	ld [hli], a ; max menu item ID (USE/INFO/TOSS)
 	ld a,A_BUTTON | B_BUTTON
 	ld [hli],a ; menu watched keys
 	xor a
@@ -384,21 +382,24 @@ StartMenu_Item:
 	ld [wd11e],a
 	call GetItemName
 	call CopyStringToCF4B ; copy name to wcf4b
+	ld a, [wCurrentMenuItem]
+	cp a, 2
+	jr z, .tossItem
+	cp a, 1
+	jp z, .infoItem
+	; use item
 	ld a,[wcf91]
 	cp a,BICYCLE
-	jr nz,.notBicycle2
+	jr nz,.notBicycle
 	ld a,[wd732]
 	bit 5,a
 	jr z,.useItem_closeMenu
 	ld hl,CannotGetOffHereText
 	call PrintText
 	jp ItemMenuLoop
-.notBicycle2
-	ld a,[wCurrentMenuItem]
-	and a
-	jr nz,.tossItem
-; use item
-	ld [wPseudoItemID],a ; a must be 0 due to above conditional jump
+.notBicycle
+	xor a
+	ld [wPseudoItemID], a ; a must be 0 due to above conditional jump
 	ld a,[wcf91]
 	cp a,HM_01
 	jr nc,.useItem_partyMenu
@@ -430,6 +431,7 @@ StartMenu_Item:
 	jp z,.partyMenuNotDisplayed
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
+	call ReloadMapData
 	pop af
 	ld [wUpdateSpritesEnabled],a
 	jp StartMenu_Item
@@ -452,6 +454,9 @@ StartMenu_Item:
 	ld hl,wNumBagItems
 	call TossItem
 .tossZeroItems
+	jp ItemMenuLoop
+.infoItem
+	callba DisplayItemDescription
 	jp ItemMenuLoop
 
 CannotUseItemsHereText:

@@ -13,7 +13,7 @@ VictoryRoad2Object:
 	db $0 ; signs
 
 	db $d ; objects
-	object SPRITE_HIKER, $c, $9, STAY, LEFT, $1, OPP_BLACKBELT, $9
+	object SPRITE_BLACKBELT, $c, $9, STAY, LEFT, $1, OPP_BLACKBELT, $9
 	object SPRITE_BLACK_HAIR_BOY_2, $15, $d, STAY, LEFT, $2, OPP_JUGGLER, $2
 	object SPRITE_BLACK_HAIR_BOY_1, $13, $8, STAY, DOWN, $3, OPP_TAMER, $5
 	object SPRITE_BLACK_HAIR_BOY_2, $4, $2, STAY, DOWN, $4, OPP_POKEMANIAC, $6
