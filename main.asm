@@ -1806,7 +1806,6 @@ INCLUDE "engine/battle/battle_transitions.asm"
 INCLUDE "engine/town_map.asm"
 INCLUDE "engine/mon_party_sprites.asm"
 INCLUDE "engine/in_game_trades.asm"
-INCLUDE "engine/palettes.asm"
 INCLUDE "engine/save.asm"
 
 
@@ -2120,6 +2119,7 @@ INCLUDE "engine/bank3f.asm"
 SECTION "Engine Spillover", ROMX
 
 INCLUDE "engine/overworld/field_moves.asm"
+INCLUDE "engine/palettes.asm"
 
 
 SECTION "Trainer Parties",ROMX

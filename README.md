@@ -43,6 +43,7 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 * custom overworld sprites, adapted from the SpaceWorld demo
 * new overworld sprites, taken from the SpaceWorld demo, for: Bill, Burglars, female Swimmers, Poliwrath, and receptionists
 * replaced other overworld sprites with those of the SpaceWorld demo
+* Trainers have their own unique palettes
 
 ## New Features
 * caught indicator in wild battles
@@ -60,6 +61,7 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 * changed Struggle to be ???-Type so nothing can be immune to it
 * Focus Energy now uses a previously unused animation
 * increase Pikachu's happiness upon healing
+* revise Pokémon palettes
 * turn to face opponent trainers who have noticed you
 * user will now awaken from Rest three turns after it is used and can attack on the third
 
