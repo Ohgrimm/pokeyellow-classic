@@ -1,15 +1,15 @@
 IslandMonsB3:
 	db $0A
-	db 27,GOLBAT
-	db 36,ZUBAT
+	db 31,SEEL
+	db 31,PSYDUCK
+	db 31,SLOWPOKE
+	db 29,HORSEA
 	db 29,KRABBY
-	db 27,ZUBAT
-	db 30,KINGLER
-	db 26,SEEL
-	db 31,KRABBY
-	db 30,SEEL
+	db 39,JYNX
+	db 37,SEADRA
+	db 37,KINGLER
+	db 37,DEWGONG
 	db 28,DEWGONG
-	db 32,DEWGONG
 
 	db $05
 	db 25,TENTACOOL
@@ -22,4 +22,3 @@ IslandMonsB3:
 	db 30,STARYU
 	db 30,STARYU
 	db 30,STARYU
-

@@ -1,14 +1,13 @@
 IslandMonsB2:
 	db $0A
-	db 27,ZUBAT
-	db 27,KRABBY
-	db 36,ZUBAT
-	db 27,GOLBAT
-	db 28,KINGLER
-	db 24,SEEL
-	db 29,KRABBY
+	db 30,SEEL
+	db 30,PSYDUCK
+	db 30,SLOWPOKE
+	db 30,SHELLDER
+	db 30,STARYU
+	db 30,GOLBAT
+	db 37,GOLDUCK
+	db 37,SLOWBRO
 	db 36,GOLBAT
-	db 31,SLOWPOKE
-	db 31,SLOWBRO
+	db 36,GOLBAT
 	db $00
-

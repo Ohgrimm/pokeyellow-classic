@@ -1,13 +1,13 @@
 MansionMonsB1:
 	db $0A
-	db 35,GRIMER
-	db 38,GRIMER
-	db 37,RATICATE
-	db 40,RATICATE
-	db 41,MUK
-	db 43,RATICATE
+	db 34,PONYTA
+	db 31,KOFFING
+	db 31,GRIMER
+	db 35,GROWLITHE
+	db 35,VULPIX
+	db 38,MAGMAR
+	db 42,WEEZING
+	db 42,MUK
 	db 24,DITTO
-	db 46,RATICATE
-	db 18,DITTO
 	db 12,DITTO
 	db $00
