@@ -84,9 +84,9 @@ BlkPacket_Slots:
 
 BlkPacket_Titlescreen:
 	ATTR_BLK 3
-	ATTR_BLK_DATA %011, 0,0,0, 00,00, 19,07
-	ATTR_BLK_DATA %011, 2,2,0, 00,08, 19,17
-	ATTR_BLK_DATA %010, 0,0,0, 09,08, 10,08
+	ATTR_BLK_DATA %011, 0,0,0, 00,00, 19,07 ; pokemon logo: pal 0
+	ATTR_BLK_DATA %011, 2,2,0, 00,08, 19,17 ; version text: pal 1
+	ATTR_BLK_DATA %010, 0,0,0, 09,08, 10,08 ; player, mon, copyright text: pal 2
 	ds 12
 
 BlkPacket_NidorinoIntro:
@@ -109,16 +109,16 @@ BlkPacket_PartyMenu:
 
 BlkPacket_TrainerCard:
 	ATTR_BLK 10
-	ATTR_BLK_DATA %010, 0,0,0, 03,12, 04,13
-	ATTR_BLK_DATA %010, 1,1,0, 07,12, 08,13
-	ATTR_BLK_DATA %010, 3,3,0, 11,12, 12,13
-	ATTR_BLK_DATA %010, 2,2,0, 16,11, 17,12
-	ATTR_BLK_DATA %010, 1,1,0, 14,13, 15,13
-	ATTR_BLK_DATA %010, 3,3,0, 16,13, 17,13
-	ATTR_BLK_DATA %010, 2,2,0, 03,15, 04,16
-	ATTR_BLK_DATA %010, 3,3,0, 07,15, 08,16
-	ATTR_BLK_DATA %010, 2,2,0, 11,15, 12,16
-	ATTR_BLK_DATA %010, 1,1,0, 15,15, 16,16
+	ATTR_BLK_DATA %010, 0,0,0, 03,12, 04,13 ; Boulder Badge
+	ATTR_BLK_DATA %010, 1,1,0, 07,12, 08,13 ; Cascade Badge
+	ATTR_BLK_DATA %010, 3,3,0, 11,12, 12,13 ; Thunder Badge
+	ATTR_BLK_DATA %010, 2,2,0, 16,11, 17,12 ; Rainbow Badge
+	ATTR_BLK_DATA %010, 1,1,0, 14,13, 15,13 ; Rainbow Badge
+	ATTR_BLK_DATA %010, 3,3,0, 16,13, 17,13 ; Rainbow Badge
+	ATTR_BLK_DATA %010, 2,2,0, 03,15, 04,16 ; Soul Badge
+	ATTR_BLK_DATA %010, 3,3,0, 07,15, 08,16 ; Marsh Badge
+	ATTR_BLK_DATA %010, 2,2,0, 11,15, 12,16 ; Volcano Badge
+	ATTR_BLK_DATA %010, 1,1,0, 15,15, 16,16 ; Earth Badge
 	ds 2
 
 BlkPacket_GameFreakIntro:

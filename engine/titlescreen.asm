@@ -35,30 +35,74 @@ DisplayTitleScreen:
 	ld de, vTitleLogo + $600
 	ld bc, $50
 	ld a, BANK(NintendoCopyrightLogoGraphics)
-	call FarCopyData
-	ld hl, NineTile
-	ld de, vTitleLogo + $6e0
-	ld bc, $10
-	ld a, BANK(NineTile)
-	call FarCopyData
+	call FarCopyData2
 	ld hl, GamefreakLogoGraphics
 	ld de, vTitleLogo + 101 * $10
 	ld bc, 9 * $10
 	ld a, BANK(GamefreakLogoGraphics)
-	call FarCopyData
-	callab LoadYellowTitleScreenGFX
-	ld hl, vBGMap0
-	ld bc, (vBGMap1 + $400) - vBGMap0
-	ld a, " "
-	call FillMemory
-	callab TitleScreen_PlacePokemonLogo
+	call FarCopyData2
+	ld hl, PokemonLogoGraphics
+	ld de, vTitleLogo
+	ld bc, $600
+	ld a, BANK(PokemonLogoGraphics)
+	call FarCopyData2          ; first chunk
+	ld hl, PokemonLogoGraphics+$600
+	ld de, vTitleLogo2
+	ld bc, $100
+	ld a, BANK(PokemonLogoGraphics)
+	call FarCopyData2          ; second chunk
+	call FarCopyDataDouble
+	call ClearBothBGMaps
+
+; place tiles for pokemon logo (except for the last row)
+	coord hl, 2, 1
+	ld a, $80
+	ld de, SCREEN_WIDTH
+	ld c, 6
+.pokemonLogoTileLoop
+	ld b, $10
+	push hl
+.pokemonLogoTileRowLoop ; place tiles for one row
+	ld [hli], a
+	inc a
+	dec b
+	jr nz, .pokemonLogoTileRowLoop
+	pop hl
+	add hl, de
+	dec c
+	jr nz, .pokemonLogoTileLoop
+
+; place tiles for the last row of the pokemon logo
+	coord hl, 2, 7
+	ld a, $31
+	ld b, $10
+.pokemonLogoLastTileRowLoop
+	ld [hli], a
+	inc a
+	dec b
+	jr nz, .pokemonLogoLastTileRowLoop
+
 	call FillSpriteBuffer0WithAA
+
+	call DrawPlayerCharacter
+
+; put a pokeball in the player's hand
+	ld hl, wOAMBuffer + $28
+	ld a, $74
+	ld [hl], a
+
 	call .WriteCopyrightTiles
+
+.next
 	call SaveScreenTilesToBuffer2
 	call LoadScreenTilesFromBuffer2
 	call EnableLCD
-	callab TitleScreen_PlacePikachu
-	ld a, $9b
+
+	ld a, PIKACHU ; which Pokemon to show first on the title screen
+
+	ld [wTitleMonSpecies], a
+	call LoadTitleMonSprite
+	ld a, (vBGMap0 + $300) / $100
 	call TitleScreenCopyTileMapToVRAM
 	call SaveScreenTilesToBuffer1
 	ld a, $40
@@ -69,6 +113,7 @@ DisplayTitleScreen:
 	ld b, SET_PAL_TITLE_SCREEN
 	call RunPaletteCommand
 	call GBPalNormal
+	;ld a, %11100100
 	ld a, %11100000
 	ld [rOBP0], a
 	call UpdateGBCPal_OBP0
@@ -136,42 +181,49 @@ DisplayTitleScreen:
 	call PlaySound
 
 ; scroll game version in from the right
-	callab TitleScreen_PlacePikaSpeechBubble
 	ld a, SCREEN_HEIGHT_PIXELS
 	ld [hWY], a
+	ld d, 144
+
+	ld a, vBGMap1 / $100
+	call TitleScreenCopyTileMapToVRAM
+	call LoadScreenTilesFromBuffer2
 	call Delay3
-	ld e, 0
-	call TitleScreen_PlayPikachuPCM
 	call WaitForSoundToFinish
-	call StopAllMusic
 	ld a, MUSIC_TITLE_SCREEN
 	ld [wNewSoundID], a
 	call PlaySound
-.loop
 	xor a
 	ld [wUnusedCC5B], a
-	ld [wTitleScreenScene], a
-	ld [wTitleScreenScene + 1], a
-	ld [wTitleScreenScene + 2], a
-	ld [wTitleScreenScene + 3], a
-	ld a, $f
-	ld [wTitleScreenScene + 4], a
-.titleScreenLoop
-	call IncrementResetCounter
-	jp c, .doTitlescreenReset
-	call DelayFrame
-	call JoypadLowSensitivity
-	ld a, [hJoyHeld]
-	cp D_UP | SELECT | B_BUTTON
-	jr z, .go_to_main_menu
-	and A_BUTTON | START
-	jr nz, .go_to_main_menu
-	call DoTitleScreenFunction
-	jr .titleScreenLoop
 
-.go_to_main_menu
-	ld e, $a
-	call TitleScreen_PlayPikachuPCM
+; Keep scrolling in new mons indefinitely until the user performs input.
+.awaitUserInterruptionLoop
+	ld c, 200
+	call CheckForUserInterruption
+	jr c, .finishedWaiting
+	call TitleScreenScrollInMon
+	ld c, 1
+	call CheckForUserInterruption
+	jr c, .finishedWaiting
+	callba TitleScreenAnimateBallIfStarterOut
+	call TitleScreenPickNewMon
+	jr .awaitUserInterruptionLoop
+
+.finishedWaiting
+	ld a, [wTitleMonSpecies]
+	cp PIKACHU
+	jr z, .playPikachuCry
+	ld a, [wTitleMonSpecies]
+	cp PIKACHU
+	jr nz, .playMonCry
+.playPikachuCry
+  call TitleScreen_PlayPikachuPCM
+	jr .afterMonCry
+.playMonCry
+	call PlayCry
+	jr .afterMonCry
+.afterMonCry
+	call WaitForSoundToFinish
 	call GBPalWhiteOutWithDelay3
 	call ClearSprites
 	xor a
@@ -192,39 +244,93 @@ DisplayTitleScreen:
 	jp z, .doClearSaveDialogue
 	jp MainMenu
 
-.asm_42f0
-; unreferenced
-	callab PrinterDebug
-	jp .loop
-
-.asm_42fb
-; unreferenced
-	ld a, [wTitleScreenScene + 4]
-	inc a
-	cp $2a
-	jr c, .asm_4305
-	ld a, $f
-.asm_4305
-	ld [wTitleScreenScene + 4], a
-	ld e, a
-	callab PlayPikachuSoundClip
-	xor a
-	ld [wTitleScreenScene + 2], a
-	ld [wTitleScreenScene + 3], a
-	jp .titleScreenLoop
-
-.doTitlescreenReset
-	ld [wAudioFadeOutControl], a
-	call StopAllMusic
-.audioFadeLoop
-	ld a, [wAudioFadeOutControl]
-	and a
-	jr nz, .audioFadeLoop
-	jp Init
-
 .doClearSaveDialogue
 	jpba DoClearSaveDialogue
 
+TitleScreenPickNewMon:
+	ld a, vBGMap0 / $100
+	call TitleScreenCopyTileMapToVRAM
+
+.loop
+; Keep looping until a mon different from the current one is picked.
+	call Random
+	and $f
+	ld c, a
+	ld b, 0
+	ld hl, TitleMons
+	add hl, bc
+	ld a, [hl]
+	ld hl, wTitleMonSpecies
+
+; Can't be the same as before.
+	cp [hl]
+	jr z, .loop
+
+	ld [hl], a
+	call LoadTitleMonSprite
+
+	ld a, $90
+	ld [hWY], a
+	ld d, 1 ; scroll out
+	callba TitleScroll
+	ret
+
+TitleScreenScrollInMon:
+	ld d, 0 ; scroll in
+	callba TitleScroll
+	xor a
+	ld [hWY], a
+	ret
+
+DrawPlayerCharacter:
+	ld hl, PlayerCharacterTitleGraphics
+	ld de, vSprites
+	ld bc, PlayerCharacterTitleGraphicsEnd - PlayerCharacterTitleGraphics
+	ld a, BANK(PlayerCharacterTitleGraphics)
+	call FarCopyData2
+	call ClearSprites
+	xor a
+	ld [wPlayerCharacterOAMTile], a
+	ld hl, wOAMBuffer
+	ld de, $605a
+	ld b, 7
+.loop
+	push de
+	ld c, 5
+.innerLoop
+	ld a, d
+	ld [hli], a ; Y
+	ld a, e
+	ld [hli], a ; X
+	add 8
+	ld e, a
+	ld a, [wPlayerCharacterOAMTile]
+	ld [hli], a ; tile
+	inc a
+	ld [wPlayerCharacterOAMTile], a
+	inc hl
+	dec c
+	jr nz, .innerLoop
+	pop de
+	ld a, 8
+	add d
+	ld d, a
+	dec b
+	jr nz, .loop
+	ret
+
+ClearBothBGMaps:
+	ld hl, vBGMap0
+	ld bc, $400 * 2
+	ld a, " "
+	jp FillMemory
+
+LoadTitleMonSprite:
+	ld [wcf91], a
+	ld [wd0b5], a
+	coord hl, 5, 10
+	call GetMonHeader
+	jp LoadFrontSpriteByMonIndex
 
 TitleScreenCopyTileMapToVRAM:
 	ld [H_AUTOBGTRANSFERDEST + 1], a
@@ -254,83 +360,8 @@ CopyrightTextString:
 TitleScreen_PlayPikachuPCM:
 	callab PlayPikachuSoundClip
 	ret
-	
-DoTitleScreenFunction:
-	call .CheckTimer
-	ld a, [wTitleScreenScene]
-	ld e, a
-	ld d, 0
-	ld hl, .Jumptable
-	add hl, de
-	add hl, de
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	jp hl
 
-	
-.Jumptable:
-	dw .Nop
-	dw .BlinkHalf
-	dw .BlinkWait
-	dw .BlinkWait
-	dw .BlinkClosed
-	dw .BlinkWait
-	dw .BlinkWait
-	dw .BlinkHalf
-	dw .BlinkWait
-	dw .BlinkWait
-	dw .BlinkOpen
-	dw .GoBackToStart
-	
-.GoBackToStart:
-	xor a
-	ld [wTitleScreenScene], a
-.Nop
-	ret
-	
-.BlinkOpen:
-	ld e, 0
-	jr .LoadBlinkFrame
-
-.BlinkHalf:
-	ld e, 4
-	jr .LoadBlinkFrame
-
-.BlinkClosed:
-	ld e, 8
-.LoadBlinkFrame:
-	ld hl, wOAMBuffer + 2
-	ld c, 8
-.loop
-	ld a, [hl]
-	and $f3
-	or e
-	ld [hli], a
-	inc hl
-	inc hl
-	inc hl
-	dec c
-	jr nz, .loop
-.BlinkWait:
-	ld hl, wTitleScreenScene
-	inc [hl]
-	ret
-	
-.CheckTimer:
-	ld hl, wTitleScreenTimer
-	ld a, [hl]
-	inc [hl]
-	and a
-	jr z, .restart
-	cp $80
-	jr z, .restart
-	cp $90
-	ret nz
-.restart
-	ld a, $1
-	ld [wTitleScreenScene], a
-	ret
+INCLUDE "data/title_mons.asm"
 
 ; copy text of fixed length NAME_LENGTH (like player name, rival name, mon names, ...)
 CopyFixedLengthText:
@@ -339,25 +370,6 @@ CopyFixedLengthText:
 
 NintenText: db "NINTEN@"
 SonyText:   db "SONY@"
-
-IncrementResetCounter:
-	ld hl, wTitleScreenScene + 2
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	inc de
-	ld a, d
-	cp $c
-	jr z, .doReset
-	ld [hl], d
-	dec hl
-	ld [hl], e
-	and a
-	ret
-
-.doReset
-	scf
-	ret
 
 FillSpriteBuffer0WithAA:
 	xor a

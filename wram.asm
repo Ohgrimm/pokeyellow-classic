@@ -1151,7 +1151,7 @@ wWhichBadge:: ; cd3d
 wPriceTemp:: ; cd3d
 ; 3-byte BCD number
 
-wTitleScreenScene:: ; cd3d
+wTitleMonSpecies:: ; cd3d
 
 wPlayerCharacterOAMTile:: ; cd3d
 
