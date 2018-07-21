@@ -2765,11 +2765,11 @@ TileIDListPointerTable:
 	dn  5,  7
 	dw DownscaledMonTiles_3x7
 	dn  3,  7
-	dw DownscaledMonTiles_79ce9
+	dw GengarIntroTiles1
 	dn  7,  7
-	dw DownscaledMonTiles_79d1a
+	dw GengarIntroTiles2
 	dn  7,  7
-	dw DownscaledMonTiles_79d4b
+	dw GengarIntroTiles3
 	dn  7,  7
 	dw DownscaledMonTiles_79d7c
 	dn  8,  6
@@ -2809,7 +2809,7 @@ DownscaledMonTiles_3x7:
 	db $02, $09, $10, $17, $1E, $25, $2C
 	db $04, $0B, $12, $19, $20, $27, $2E
 
-DownscaledMonTiles_79ce9:
+GengarIntroTiles1:
 	db $00, $00, $00, $00, $00, $00, $00
 	db $00, $00, $00, $00, $00, $19, $00
 	db $02, $06, $0B, $10, $14, $1A, $00
@@ -2818,7 +2818,7 @@ DownscaledMonTiles_79ce9:
 	db $04, $09, $0E, $13, $17, $1D, $1F
 	db $05, $0A, $0F, $01, $18, $1E, $20
 
-DownscaledMonTiles_79d1a:
+GengarIntroTiles2:
 	db $00, $00, $00, $30, $00, $37, $00
 	db $00, $00, $2B, $31, $34, $38, $3D
 	db $21, $26, $2C, $01, $35, $39, $3E
@@ -2827,7 +2827,7 @@ DownscaledMonTiles_79d1a:
 	db $24, $29, $2F, $01, $01, $3B, $00
 	db $25, $2A, $01, $01, $01, $3C, $00
 
-DownscaledMonTiles_79d4b:
+GengarIntroTiles3:
 	db $00, $00, $00, $00, $00, $00, $00
 	db $00, $00, $47, $4D, $00, $00, $00
 	db $00, $00, $48, $4E, $52, $56, $5B

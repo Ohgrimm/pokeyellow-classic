@@ -417,6 +417,10 @@ tx_pre_jump: MACRO
 	jp PrintPredefTextID
 ENDM
 
+ldPal: MACRO
+	ld \1, \2 << 6 | \3 << 4 | \4 << 2 | \5
+ENDM
+
 WALK EQU $FE
 STAY EQU $FF
 
