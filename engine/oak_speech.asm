@@ -72,7 +72,7 @@ OakSpeech:
 	call PrintText
 	call GBFadeOutToWhite
 	call ClearScreen
-	ld a,PIKACHU
+	ld a,JIGGLYPUFF
 	ld [wd0b5],a
 	ld [wcf91],a
 	call GetMonHeader
@@ -163,7 +163,7 @@ OakSpeechText1:
 	db "@"
 OakSpeechText2:
 	TX_FAR _OakSpeechText2A
-	db $14 ; play NIDORINA cry from TextCommandSounds
+	db $14 ; play JIGGLYPUFF cry from TextCommandSounds
 	TX_FAR _OakSpeechText2B
 	db "@"
 IntroducePlayerText:
