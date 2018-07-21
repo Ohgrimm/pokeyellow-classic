@@ -149,6 +149,12 @@ bcd3: MACRO
 coins equs "bcd2"
 money equs "bcd3"
 
+;\1 = X
+;\2 = Y
+hlCoord: MACRO
+	ld hl, wTileMap + 20 * \2 + \1
+	ENDM
+
 validateCoords: MACRO
 	if \1 >= SCREEN_WIDTH
 		fail "x coord out of range"

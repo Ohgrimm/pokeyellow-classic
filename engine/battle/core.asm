@@ -1206,18 +1206,13 @@ UseNextMonText:
 
 ; choose next player mon to send out
 ; stores whether enemy mon has no HP left in Z flag
+; this only seems to be used when player mon has fainted, not when prompting
+; to switch before opponent sends out their next mon.
 ChooseNextMon:
-	ld a, BATTLE_PARTY_MENU
-	ld [wPartyMenuTypeOrMessageID], a
-	call DisplayPartyMenu
-.checkIfMonChosen
-	jr nc, .monChosen
-.goBackToPartyMenu
-	call GoBackToPartyMenu
-	jr .checkIfMonChosen
-.monChosen
+	call ShowChooseMonMenu
+	jr c,ChooseNextMon ;must choose a mon
 	call HasMonFainted
-	jr z, .goBackToPartyMenu ; if mon fainted, you have to choose another
+	jr z,ChooseNextMon ;must not choose a fainted mon
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr nz, .notLinkBattle
@@ -1521,9 +1516,8 @@ EnemySendOutFirstMon:
 	ld a,[wCurrentMenuItem]
 	and a
 	jr nz,.next4
-	ld a,BATTLE_PARTY_MENU
-	ld [wPartyMenuTypeOrMessageID],a
-	call DisplayPartyMenu
+	;ask player to choose a mon
+	call ShowChooseMonMenu
 .next9
 	ld a,1
 	ld [wCurrentMenuItem],a
@@ -2513,13 +2507,11 @@ PartyMenuOrRockOrRun:
 	jp UseBagItem
 .partyMenuWasSelected
 	call LoadScreenTilesFromBuffer1
-	xor a ; NORMAL_PARTY_MENU
-	ld [wPartyMenuTypeOrMessageID], a
-	ld [wMenuItemToSwap], a
-	call DisplayPartyMenu
-.checkIfPartyMonWasSelected
-	jp nc, .partyMonWasSelected ; if a party mon was selected, jump, else we quit the party menu
-.quitPartyMenu
+	;the hack basically copies this code into a reusable function,
+	;so call it here instead of duplicating it to save ROM space
+	call ShowChooseMonMenu
+	jr nc,.notCancelled
+
 	call ClearSprites
 	call GBPalWhiteOut
 	call LoadHudTilePatterns
@@ -2527,90 +2519,8 @@ PartyMenuOrRockOrRun:
 	call RunDefaultPaletteCommand
 	call GBPalNormal
 	jp DisplayBattleMenu
-.partyMonDeselected
-	coord hl, 11, 11
-	ld bc, 6 * SCREEN_WIDTH + 9
-	ld a, " "
-	call FillMemory
-	xor a ; NORMAL_PARTY_MENU
-	ld [wPartyMenuTypeOrMessageID], a
-	call GoBackToPartyMenu
-	jr .checkIfPartyMonWasSelected
-.partyMonWasSelected
-	ld a, SWITCH_STATS_CANCEL_MENU_TEMPLATE
-	ld [wTextBoxID], a
-	call DisplayTextBoxID
-	ld hl, wTopMenuItemY
-	ld a, $c
-	ld [hli], a ; wTopMenuItemY
-	ld [hli], a ; wTopMenuItemX
-	xor a
-	ld [hli], a ; wCurrentMenuItem
-	inc hl
-	ld a, $2
-	ld [hli], a ; wMaxMenuItem
-	ld a, B_BUTTON | A_BUTTON
-	ld [hli], a ; wMenuWatchedKeys
-	xor a
-	ld [hl], a ; wLastMenuItem
-	call HandleMenuInput
-	bit 1, a ; was A pressed?
-	jr nz, .partyMonDeselected ; if B was pressed, jump
-; A was pressed
-	call PlaceUnfilledArrowMenuCursor
-	ld a, [wCurrentMenuItem]
-	cp $2 ; was Cancel selected?
-	jr z, .quitPartyMenu ; if so, quit the party menu entirely
-	and a ; was Switch selected?
-	jr z, .switchMon ; if so, jump
-; Stats was selected
-	xor a ; PLAYER_PARTY_DATA
-	ld [wMonDataLocation], a
-	ld hl, wPartyMon1
-	call ClearSprites
-; display the two status screens
-	predef StatusScreen
-	predef StatusScreen2
-; now we need to reload the enemy mon pic
-	ld a, 1
-	ld [H_WHOSETURN], a
-	ld a, [wEnemyBattleStatus2]
-	bit HasSubstituteUp, a ; does the enemy mon have a substitute?
-	ld hl, AnimationSubstitute
-	jr nz, .doEnemyMonAnimation
-; enemy mon doesn't have substitute
-	ld a, [wEnemyMonMinimized]
-	and a ; has the enemy mon used Minimise?
-	ld hl, AnimationMinimizeMon
-	jr nz, .doEnemyMonAnimation
-; enemy mon is not minimised
-	ld a, [wEnemyMonSpecies]
-	ld [wcf91], a
-	ld [wd0b5], a
-	call GetMonHeader
-	ld de, vFrontPic
-	call LoadMonFrontSprite
-	jr .enemyMonPicReloaded
-.doEnemyMonAnimation
-	ld a, 1
-	ld [H_WHOSETURN], a
-	ld b, BANK(AnimationSubstitute) ; BANK(AnimationMinimizeMon)
-	call Bankswitch
-.enemyMonPicReloaded ; enemy mon pic has been reloaded, so return to the party menu
-	jp .partyMenuWasSelected
-.switchMon
-	ld a, [wPlayerMonNumber]
-	ld d, a
-	ld a, [wWhichPokemon]
-	cp d ; check if the mon to switch to is already out
-	jr nz, .notAlreadyOut
-; mon is already out
-	ld hl, AlreadyOutText
-	call PrintText
-	jp .partyMonDeselected
-.notAlreadyOut
-	call HasMonFainted
-	jp z, .partyMonDeselected ; can't switch to fainted mon
+
+.notCancelled:
 	ld a, $1
 	ld [wActionResultOrTookBattleTurn], a
 	call GBPalWhiteOut
@@ -8610,4 +8520,113 @@ PlayBattleAnimationGotID:
 	pop bc
 	pop de
 	pop hl
+	ret
+
+;hack function to show the party menu, with stats/switch/cancel submenu,
+;and return the chosen mon index in A; sets carry flag if cancelled
+ShowChooseMonMenu::
+	xor a
+	ld [wPartyMenuTypeOrMessageID], a
+	ld [wMenuItemToSwap], a
+	call DisplayPartyMenu
+
+.checkIfPartyMonWasSelected:
+	jr nc, .monSelected
+
+	;menu cancelled
+	ret
+
+.partyMonDeselected
+	hlCoord 11, 11
+	ld bc, $81
+	ld a, $7f
+	call FillMemory
+	xor a
+	ld [wPartyMenuTypeOrMessageID], a
+	call GoBackToPartyMenu
+	jr .checkIfPartyMonWasSelected
+
+.monSelected:
+	ld a, $c ; switch/stats/cancel menu
+	ld [wTextBoxID], a
+	call DisplayTextBoxID
+	ld hl, wTopMenuItemY
+	ld a, $c
+	ld [hli], a ; wTopMenuItemY
+	ld [hli], a ; wTopMenuItemX
+	xor a
+	ld [hli], a ; wCurrentMenuItem
+	inc hl
+	ld a, $2
+	ld [hli], a ; wMaxMenuItem
+	ld a, B_BUTTON | A_BUTTON
+	ld [hli], a ; wMenuWatchedKeys
+	xor a
+	ld [hl], a ; wLastMenuItem
+	call HandleMenuInput
+
+	bit 1, a ; was A pressed?
+	jr nz, .partyMonDeselected ; if B was pressed, jump
+; A was pressed
+	call PlaceUnfilledArrowMenuCursor
+	ld a, [wCurrentMenuItem]
+	cp $2 ; was Cancel selected?
+	jr z, .cancelMenu ; if so, quit the party menu entirely
+	and a ; was Switch selected?
+	jr z, .switchMon ; if so, jump
+
+; Stats was selected
+	xor a
+	ld [wMonDataLocation], a
+	ld hl, wPartyMon1
+	call ClearSprites
+; display the two status screens
+	predef StatusScreen
+	predef StatusScreen2
+; now we need to reload the enemy mon pic
+	ld a, [wEnemyBattleStatus2]
+	bit 4, a ; does the enemy mon have a substitute?
+	ld hl, AnimationSubstitute
+	jr nz, .doEnemyMonAnimation
+; enemy mon doesn't have substitute
+	ld a, [wEnemyMonMinimized]
+	and a ; has the enemy mon used Minimise?
+	ld hl, AnimationMinimizeMon
+	jr nz, .doEnemyMonAnimation
+; enemy mon is not minimised
+	ld a, [wEnemyMonSpecies]
+	ld [wcf91], a
+	ld [wd0b5], a
+	call GetMonHeader
+	ld de, vFrontPic
+	call LoadMonFrontSprite
+	jr .enemyMonPicReloaded
+.doEnemyMonAnimation
+	ld b, BANK(AnimationSubstitute) ; BANK(AnimationMinimizeMon)
+	call Bankswitch
+.enemyMonPicReloaded ; enemy mon pic has been reloaded, so return to the party menu
+	jp ShowChooseMonMenu
+
+
+.cancelMenu: ;"cancel" selected
+	jp ShowChooseMonMenu
+
+
+.switchMon: ;"switch" selected
+	ld a, [wPlayerMonNumber]
+	ld d, a
+	ld a, [wWhichPokemon]
+	cp d ; check if the mon to switch to is already out
+	jr nz, .notAlreadyOut
+	; mon is already out
+	ld hl, AlreadyOutText
+	call PrintText
+	jp .partyMonDeselected
+
+.notAlreadyOut
+	call HasMonFainted
+	jp z, .partyMonDeselected ; can't switch to fainted mon
+	ld a, [wWhichPokemon]
+	scf ;ensure carry flag is zero
+	ccf ;ccf is complement, not clear
 	ret
