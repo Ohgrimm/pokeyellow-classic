@@ -35,6 +35,11 @@ DisplayTitleScreen:
 	ld de, vTitleLogo + $600
 	ld bc, $50
 	ld a, BANK(NintendoCopyrightLogoGraphics)
+	call FarCopyData
+	ld hl, NineTile
+	ld de, vTitleLogo + $6e0
+	ld bc, $10
+	ld a, BANK(NineTile)
 	call FarCopyData2
 	ld hl, GamefreakLogoGraphics
 	ld de, vTitleLogo + 101 * $10
@@ -51,11 +56,15 @@ DisplayTitleScreen:
 	ld bc, $100
 	ld a, BANK(PokemonLogoGraphics)
 	call FarCopyData2          ; second chunk
-	call FarCopyDataDouble
+	ld hl, GottaCatchEmAllTiles
+	ld de, vChars2 + $500
+	ld bc, GottaCatchEmAllTilesEnd - GottaCatchEmAllTiles
+	ld a, BANK(GottaCatchEmAllTiles)
+	call FarCopyData2
 	call ClearBothBGMaps
 
 ; place tiles for pokemon logo (except for the last row)
-	coord hl, 2, 1
+	coord hl, 2, 0
 	ld a, $80
 	ld de, SCREEN_WIDTH
 	ld c, 6
@@ -73,7 +82,7 @@ DisplayTitleScreen:
 	jr nz, .pokemonLogoTileLoop
 
 ; place tiles for the last row of the pokemon logo
-	coord hl, 2, 7
+	coord hl, 2, 6
 	ld a, $31
 	ld b, $10
 .pokemonLogoLastTileRowLoop
@@ -81,16 +90,30 @@ DisplayTitleScreen:
 	inc a
 	dec b
 	jr nz, .pokemonLogoLastTileRowLoop
-
-	call FillSpriteBuffer0WithAA
+	coord hl, 4, 7
+	ld a, $50
+	ld b, $D
+.catchemallloop
+	ld [hli], a
+	inc a
+	dec b
+	jr nz, .catchemallloop
+	coord hl, 4, 8
+	ld b, $D
+.catchemallloop2
+	ld [hli], a
+	inc a
+	dec b
+	jr nz, .catchemallloop2
 
 	call DrawPlayerCharacter
 
-; put a pokeball in the player's hand
+	; put a pokeball in the player's hand
 	ld hl, wOAMBuffer + $28
 	ld a, $74
 	ld [hl], a
 
+	call FillSpriteBuffer0WithAA
 	call .WriteCopyrightTiles
 
 .next
@@ -161,7 +184,7 @@ DisplayTitleScreen:
 ; place tiles for title screen copyright
 .WriteCopyrightTiles
 	coord hl, 2, 17
-	ld de, .tileScreenCopyrightTiles
+	ld de, .titleScreenCopyrightTiles
 .titleScreenCopyrightTilesLoop
 	ld a, [de]
 	inc de
@@ -170,7 +193,7 @@ DisplayTitleScreen:
 	ld [hli], a
 	jr .titleScreenCopyrightTilesLoop
 
-.tileScreenCopyrightTiles
+.titleScreenCopyrightTiles
 	db $e0,$e1,$e2,$e3,$e1,$e2,$ee,$e5,$e6,$e7,$e8,$e9,$ea,$eb,$ec,$ed,$ff ; ©1995-1999 GAME FREAK inc.
 
 .finishedBouncingPokemonLogo
@@ -190,6 +213,7 @@ DisplayTitleScreen:
 	call LoadScreenTilesFromBuffer2
 	call Delay3
 	call WaitForSoundToFinish
+	call StopAllMusic
 	ld a, MUSIC_TITLE_SCREEN
 	ld [wNewSoundID], a
 	call PlaySound

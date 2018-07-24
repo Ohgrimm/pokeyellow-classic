@@ -357,10 +357,12 @@ TitleScreenPikachuTilemap:
 	db $00, $b9, $ba, $8a, $8a, $8a, $8a, $8a, $8a, $bb, $bc, $00
 	db $00, $00, $bd, $8a, $8a, $8a, $8a, $8a, $8a, $be, $bf, $00
 
-PokemonLogoGraphics:	     INCBIN "gfx/pokemon_logo.2bpp"
+PokemonLogoGraphics:	     INCBIN "gfx/custom/pokemon_logo.2bpp"
 PokemonLogoGraphicsEnd:
 YellowLogoGraphics:	      INCBIN "gfx/yellow_titlescreen.2bpp"
 YellowLogoGraphicsEnd:
+GottaCatchEmAllTiles:           INCBIN "gfx/custom/gotta_catch_em_all.2bpp"
+GottaCatchEmAllTilesEnd:
 
 INCLUDE "engine/menu/link_menu.asm"
 
