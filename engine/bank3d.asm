@@ -235,76 +235,6 @@ AgathaPic:        INCBIN "pic/trainer/agatha.pic"
 LancePic:         INCBIN "pic/trainer/lance.pic"
 JessieJamesPic:   INCBIN "pic/ytrainer/jessiejames.pic"
 
-LoadYellowTitleScreenGFX:
-	ld hl, PokemonLogoGraphics
-	ld de, vChars2
-	ld bc, 115 * $10
-	ld a, BANK(PokemonLogoGraphics) ; redundant because this function is in bank3d
-	call FarCopyData
-	ld hl, YellowLogoGraphics + 35 * $10
-	ld de, vChars0 + 253 * $10
-	ld bc, 3 * $10
-	ld a, BANK(YellowLogoGraphics)
-	call FarCopyData
-	ld hl, YellowLogoGraphics + 38 * $10
-	ld de, vChars1
-	ld bc, 64 * $10
-	ld a, BANK(YellowLogoGraphics)
-	call FarCopyData
-	ld hl, YellowLogoGraphics + 102 * $10
-	ld de, vChars0 + 240 * $10
-	ld bc, 12 * $10
-	ld a, BANK(YellowLogoGraphics)
-	call FarCopyData
-	ret
-
-TitleScreen_PlacePokemonLogo:
-	coord hl, 2, 1
-	ld de, TitleScreenPokemonLogoTilemap
-	lb bc, 7, 16
-	call Bank3D_CopyBox
-	ret
-
-TitleScreen_PlacePikaSpeechBubble:
-	coord hl, 6, 4
-	ld de, TitleScreenPikaBubbleTilemap
-	lb bc, 4, 7
-	call Bank3D_CopyBox
-	coord hl, 9, 8
-	ld [hl], $64
-	inc hl
-	ld [hl], $65
-	ret
-
-TitleScreen_PlacePikachu:
-	coord hl, 4, 8
-	ld de, TitleScreenPikachuTilemap
-	lb bc, 9, 12
-	call Bank3D_CopyBox
-	coord hl, 16, 10
-	ld [hl], $96
-	coord hl, 16, 11
-	ld [hl], $9d
-	coord hl, 16, 12
-	ld [hl], $a7
-	coord hl, 16, 13
-	ld [hl], $b1
-	ld hl, TitleScreenPikachuEyesOAMData
-	ld de, wOAMBuffer
-	ld bc, $20
-	call CopyData
-	ret
-
-TitleScreenPikachuEyesOAMData:
-	db $60, $40, $f1, $22
-	db $60, $48, $f0, $22
-	db $68, $40, $f3, $22
-	db $68, $48, $f2, $22
-	db $60, $60, $f0, $02
-	db $60, $68, $f1, $02
-	db $68, $60, $f2, $02
-	db $68, $68, $f3, $02
-
 Bank3D_CopyBox:
 ; copy cxb (xy) screen area from de to hl
 .row
@@ -323,39 +253,6 @@ Bank3D_CopyBox:
 	dec b
 	jr nz, .row
 	ret
-
-TitleScreenPokemonLogoTilemap:
-; 16x7 (xy)
-	db $f4, $f4, $f4, $f4, $f4, $f4, $49, $f4, $72, $30, $f4, $f4, $f4, $f4, $f4, $f4
-	db $fd, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b, $f4, $0d, $0e, $0f
-	db $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $1a, $1b, $1c, $1d, $1e, $1f
-	db $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $2a, $2b, $2c, $2d, $2e, $2f
-	db $f4, $31, $32, $33, $34, $35, $36, $37, $38, $39, $3a, $3b, $3c, $3d, $3e, $3f
-	db $f4, $41, $42, $43, $44, $45, $46, $47, $48, $f4, $4a, $4b, $4c, $4d, $4e, $4f
-	db $f4, $6a, $6b, $6c, $6d, $f4, $f4, $f4, $f4, $f4, $f4, $6e, $6f, $70, $71, $f4
-
-Pointer_f4669:
-; Unreferenced
-	db $47, $48, $49, $4a, $4b, $4c, $4d, $4e, $4f, $5f
-
-TitleScreenPikaBubbleTilemap:
-; 7x4 (xy)
-	db $24, $25, $66, $67, $68, $69, $2a
-	db $50, $51, $52, $53, $54, $55, $56
-	db $57, $58, $59, $5a, $5b, $5c, $5d
-	db $6d, $5e, $5f, $60, $61, $62, $63
-
-TitleScreenPikachuTilemap:
-; 12x9 (xy)
-	db $80, $81, $82, $83, $00, $00, $00, $00, $84, $85, $86, $87
-	db $88, $89, $8a, $8b, $8c, $8d, $8d, $8e, $8f, $8a, $90, $91
-	db $00, $92, $93, $8a, $8a, $8a, $8a, $8a, $8a, $94, $95, $00
-	db $00, $00, $97, $8a, $8a, $98, $99, $8a, $8a, $9a, $9b, $9c
-	db $00, $00, $9e, $9f, $a0, $a1, $a2, $a3, $a4, $a5, $a6, $8a
-	db $00, $a8, $a9, $aa, $8a, $ab, $ac, $8a, $ad, $ae, $af, $b0
-	db $00, $b2, $b3, $b4, $8a, $8a, $8a, $8a, $b5, $b6, $b7, $b8
-	db $00, $b9, $ba, $8a, $8a, $8a, $8a, $8a, $8a, $bb, $bc, $00
-	db $00, $00, $bd, $8a, $8a, $8a, $8a, $8a, $8a, $be, $bf, $00
 
 PokemonLogoGraphics:	     INCBIN "gfx/custom/pokemon_logo.2bpp"
 PokemonLogoGraphicsEnd:

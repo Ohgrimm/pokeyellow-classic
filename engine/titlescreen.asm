@@ -108,7 +108,7 @@ DisplayTitleScreen:
 
 	call DrawPlayerCharacter
 
-	; put a pokeball in the player's hand
+; put a pokeball in the player's hand
 	ld hl, wOAMBuffer + $28
 	ld a, $74
 	ld [hl], a
@@ -139,7 +139,7 @@ DisplayTitleScreen:
 	;ld a, %11100100
 	ld a, %11100000
 	ld [rOBP0], a
-	call UpdateGBCPal_OBP0
+	;call UpdateGBCPal_OBP0
 
 ; make pokemon logo bounce up and down
 	ld bc, hSCY ; background scroll Y
